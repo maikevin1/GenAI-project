@@ -163,28 +163,3 @@ The notebook includes:
 2. Fine-tuning RoBERTa-base on GPT-2 vs Human  
 3. Evaluation on GPT-3.5, GPT-4, and Human holdout  
 4. Visualization of performance degradation across LLM generations
-
-## 9. Data Notes
-
-All datasets used in this project are stored in compressed `.zip` files inside the repository.  
-This approach keeps the repository clean and avoids uploading thousands of small text files,  
-which can cause performance issues on GitHub.
-
-The following datasets are included in compressed form:
-
-- GPT-2 output dataset  
-- Human-written WebText dataset  
-- GPT-3.5 generated outputs  
-- GPT-4 generated outputs  
-
-If you need to access the raw files during experimentation, you can extract them in the notebook using:
-
-```python
-import zipfile
-
-with zipfile.ZipFile("data/gpt2_data.zip", "r") as z:
-    z.extractall("data/gpt2_extracted")
-```
-
-Each dataset is only extracted when needed during training or evaluation.
-This reduces repository size and keeps GitHub loading speed fast.
