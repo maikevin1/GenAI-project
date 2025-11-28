@@ -53,27 +53,9 @@ Accuracy and F1 comparison across model generations:
 Cross-generation degradation trend:  
 ![Degradation Curve](images/degradation_line.png)
 
-## 2. Question 1  
-Why does a detector trained on GPT-2 outputs fail to identify GPT-4 outputs?
+## 2. Architecture Overview
 
-### Answer  
-GPT-4 produces text that is significantly more fluent, coherent, and human-like than GPT-2.  
-The RoBERTa detector learns GPT-2–specific patterns, such as repetitive phrasing or unnatural transitions.  
-When tested on GPT-4, these patterns no longer exist, causing the model to misclassify GPT-4 text as human.  
-This mismatch between training distribution and test distribution is the core reason for the generalization failure.
-
-## 3. Question 2  
-Would adding a small amount of GPT-3.5 or GPT-4 data during training improve detection performance?
-
-### Answer  
-Yes.  
-Mixing a small number of samples from newer models into the training set allows the detector to learn updated linguistic patterns.  
-This reduces the distribution gap and helps the model recognize features present in newer LLM outputs.  
-This idea connects to continual learning: detectors must be updated regularly as LLMs evolve.
-
-## 4. Architecture Overview
-
-### 4.1 Model Structure  
+### 2.1 Model Structure  
 The detector is based on RoBERTa-base, a transformer encoder model.  
 Each input text is tokenized, passed through the transformer layers, and the final [CLS] representation is fed into a linear classifier to predict whether the text is AI-generated or human-written.
 
@@ -85,16 +67,16 @@ Pipeline:
 5. Linear classification layer  
 6. Output probability (AI vs Human)
 
-### 4.2 Training Setup  
+### 2.2 Training Setup  
 Training data: GPT-2 outputs labeled as AI, and human WebText labeled as human.  
 Validation: 20 percent split from the training domain.  
 Testing: GPT-3.5, GPT-4, and human holdout samples.
 
-### 4.3 Key Difference from Prior Work  
+### 2.3 Key Difference from Prior Work  
 Most existing detectors are trained and evaluated on the same generation of LLM outputs.  
 This project evaluates cross-generation generalization, showing how performance drops when the test data comes from newer models not seen during training.
 
-## 5. Critical Analysis
+## 3. Critical Analysis
 
 ### Strengths  
 The experimental design clearly isolates the cross-generation generalization problem.  
@@ -111,7 +93,7 @@ Include mixed-generation training data for continual model updates.
 Explore interpretability methods such as SHAP or attention-based visualization to understand what linguistic cues the detector relies on.  
 Consider retrieval-augmented or hybrid detection methods that use both statistical and semantic signals.
 
-## 6. Impacts
+## 4. Impacts
 
 ### Technical Impact  
 The results demonstrate that AI text detectors trained on older LLM outputs cannot reliably identify text from newer models.  
@@ -129,7 +111,7 @@ They also support the idea that detection should not rely solely on surface-leve
 As generative models evolve, detection will become increasingly challenging.  
 Policies and guidelines must therefore consider continual detector updates, multi-model training, or hybrid human–AI review processes.
 
-## 7. Resource Links
+## 5. Resource Links
 
 ### Relevant Datasets and Models  
 GPT-2 Output Dataset  
@@ -145,11 +127,7 @@ https://platform.openai.com/docs/api-reference
 Survey on AI text detection  
 https://arxiv.org/abs/2307.09795
 
-### Course Reference  
-Vanderbilt University Data Science Institute  
-https://dsi.vanderbilt.edu
-
-## 8. Code Demonstration
+## 6. Code Demonstration
 
 To view the full implementation, training logs, evaluation metrics, and visualization results,  
 please refer directly to the Jupyter Notebook in this repository:
